@@ -1,3 +1,4 @@
+import { createNewEntryMessage, isSaveMessage } from '../shared/messages';
 import { createNote } from '../shared/note';
 
 chrome.contextMenus.removeAll(() => {
@@ -13,11 +14,30 @@ chrome.contextMenus.removeAll(() => {
   });
 });
 
-chrome.contextMenus.onClicked.addListener((info) => {
-  if (info.selectionText) {
-    createNote(info.selectionText, 'selection');
-  } else if (info.linkUrl) {
-    createNote(info.linkUrl, 'link');
+chrome.contextMenus.onClicked.addListener(async (info) => {
+  const [active_tab] = await chrome.tabs.query({ active: true });
+
+  if (!active_tab?.id) {
+    console.warn('Unable to find active tab');
+    return;
   }
-  console.log('Context menu clicked', info);
+
+  chrome.tabs.sendMessage(
+    active_tab.id,
+    createNewEntryMessage({
+      selectionText: info.selectionText,
+      pageUrl: info.pageUrl,
+      linkUrl: info.linkUrl,
+    })
+  );
+});
+
+chrome.runtime.onMessage.addListener((message) => {
+  if (isSaveMessage(message)) {
+    createNote({
+      text: message.text,
+      pageurl: message.pageurl,
+      url: message.linkurl,
+    });
+  }
 });

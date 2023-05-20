@@ -1,0 +1,128 @@
+x-kamus-root {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2147483647;
+  font-family: sans-serif;
+  font-size: 16px;
+
+  * {
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+
+  .overlay {
+    width: 100%;
+    height: 100%;
+    pointer-events: all;
+    background-color: rgba(255, 198, 228, 0.5);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+x-kamus-dialog {
+  border-radius: 0.5rem;
+  background-color: white;
+  box-shadow: 0 5px 11px -5px rgba(0, 0, 0, 0.3);
+  min-width: 640px;
+
+  @media screen and (max-width: 640px) {
+    min-width: auto;
+    width: 100%;
+    margin: 0 1rem;
+  }
+}
+
+x-kamus-dialog-header {
+  padding: 1rem;
+  display: block;
+  font-weight: bold;
+  color: #f08;
+
+  + x-kamus-dialog-body {
+    border-top: solid 1px rgba(0, 0, 0, 0.1);
+  }
+}
+
+x-kamus-dialog-body {
+  padding: 1rem;
+  display: block;
+
+  + x-kamus-dialog-actions {
+    border-top: solid 1px rgba(0, 0, 0, 0.1);
+  }
+
+  label.kamus-content-input-label {
+    display: block;
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+  }
+
+  textarea.kamus-content-input,
+  input.kamus-content-input {
+    display: block;
+    border: solid 1px rgba(0, 0, 0, 0.2);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    width: 100%;
+    outline-color: #f08;
+    resize: vertical;
+    font-size: 16px;
+    font-family: sans-serif;
+  }
+
+  .kamus-content-input-field + .kamus-content-input-field {
+    margin-top: 0.5rem;
+  }
+}
+
+x-kamus-dialog-actions {
+  padding: 1rem;
+  display: block;
+  display: flex;
+  justify-content: end;
+}
+
+x-kamus-dialog-action {
+  -webkit-appearance: button;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  height: auto;
+  background-color: #f08;
+  color: white;
+  padding: 0.5rem 1rem;
+  line-height: 1rem;
+  font-weight: bold;
+  border-radius: 0.25rem;
+  border-bottom: solid 2px #95004f;
+  border-right: solid 2px #95004f;
+  border-top: solid 2px #f08;
+  border-left: solid 2px #f08;
+
+  &:active {
+    background-color: #e5007a;
+    border-top: solid 2px #95004f;
+    border-left: solid 2px #95004f;
+    border-bottom: solid 2px #f08;
+    border-right: solid 2px #f08;
+  }
+
+  &.secondary {
+    background-color: transparent;
+    border: solid 2px transparent;
+    color: #f08;
+
+    &:active {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+}
