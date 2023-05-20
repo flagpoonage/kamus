@@ -1,11 +1,17 @@
 {
   "scripts": {
-    "copy": "cp -R ./static/* ./dist",
-    "dev:popup": "esbuild ./src/popup/index.ts --watch --bundle --sourcemap=inline --outfile=./dist/popup.js",
-    "dev:popup-style": "postcss ./src/popup/style/index.css -o ./dist/popup-style.css -w --verbose -u postcss-nested -u postcss-import",
-    "dev:content": "esbuild ./src/content/index.ts --watch --bundle --sourcemap=inline --outfile=./dist/content.js",
-    "dev:background": "esbuild ./src/background/index.ts --watch --bundle --sourcemap=inline --outfile=./dist/background.js",
-    "dev": "npm run copy && concurrently -c red,green,blue,yellow -n \"popup\",\"background\",\"content\",\"popup-style\" \"npm run dev:popup\" \"npm run dev:content\" \"npm run dev:background\" \"npm run dev:popup-style\""
+    "dev:copy": "cp -R ./static/* ./dist-dev",
+    "dev:popup": "esbuild ./src/popup/index.ts --watch --bundle --sourcemap=inline --outfile=./dist-dev/popup.js",
+    "dev:popup-style": "postcss ./src/popup/style/index.css -o ./dist-dev/popup-style.css -w --verbose -u postcss-nested -u postcss-import",
+    "dev:content": "esbuild ./src/content/index.ts --watch --bundle --sourcemap=inline --outfile=./dist-dev/content.js",
+    "dev:background": "esbuild ./src/background/index.ts --watch --bundle --sourcemap=inline --outfile=./dist-dev/background.js",
+    "dev": "npm run dev:copy && concurrently -c red,green,blue,yellow -n \"popup\",\"background\",\"content\",\"popup-style\" \"npm run dev:popup\" \"npm run dev:content\" \"npm run dev:background\" \"npm run dev:popup-style\"",
+    "build:copy": "cp -R ./static/* ./dist-prod",
+    "build:popup": "esbuild ./src/popup/index.ts --minify --bundle  --outfile=./dist-prod/popup.js",
+    "build:popup-style": "postcss ./src/popup/style/index.css --verbose -u postcss-nested -u postcss-import | esbuild --loader=css --minify | cat > ./dist-prod/popup-style.css",
+    "build:content": "esbuild ./src/content/index.ts --minify --bundle  --outfile=./dist-prod/content.js",
+    "build:background": "esbuild ./src/background/index.ts --minify --bundle  --outfile=./dist-prod/background.js",
+    "build": "npm run build:copy && npm run build:popup && npm run build:popup-style && npm run build:content && npm run build:background"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.236",
