@@ -1,6 +1,8 @@
 export interface NoteBase {
   text: string;
   created_at: number;
+  category?: string;
+  pageurl: string;
   notes?: Note[];
 }
 
@@ -19,17 +21,24 @@ export type NoteType = Note['type'];
 
 export interface NoteCreateProperties {
   text: string;
+  category?: string;
   pageurl: string;
   url?: string;
 }
 
+export async function getNotes(): Promise<Note[]> {
+  return ((await chrome.storage.local.get('notes')) ?? {}).notes ?? [];
+}
+
 export async function createNote(props: NoteCreateProperties, rootNote?: Note) {
-  const notes = ((await chrome.storage.local.get('notes')) ?? {}).notes ?? [];
+  const notes = await getNotes();
 
   const type = props.url ? 'link' : 'selection';
 
   const note: Note = {
     text: props.text,
+    category: props.category,
+    pageurl: props.pageurl,
     type,
     url: props.url,
     created_at: new Date().getTime(),
@@ -74,7 +83,7 @@ function destroyNote(note: Note, currentRoot: Note[] | Note): boolean {
 }
 
 export async function removeNote(note: Note) {
-  const notes = ((await chrome.storage.local.get('notes')) ?? {}).notes ?? [];
+  const notes = await getNotes();
   const destroyed = destroyNote(note, notes);
 
   if (!destroyed) {

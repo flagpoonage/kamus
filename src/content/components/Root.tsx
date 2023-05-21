@@ -9,8 +9,12 @@ function useMessageReceiver() {
     cancelAll,
     setNewNoteText,
     setNewNoteUrl,
+    setNewNoteCategory,
+    setNewNoteCategoryName,
     handleNewNoteMessage,
+    setNewNoteCategoryColor,
     saveNote,
+    categories,
   } = useContentScriptState();
 
   useEffect(() => {
@@ -34,19 +38,33 @@ function useMessageReceiver() {
     currentState,
     setNewNoteText,
     setNewNoteUrl,
+    setNewNoteCategory,
+    setNewNoteCategoryName,
+    setNewNoteCategoryColor,
     cancelAll,
     saveNote,
+    categories,
   };
 }
 
 export function Root() {
-  const { currentState, setNewNoteText, setNewNoteUrl, cancelAll, saveNote } =
-    useMessageReceiver();
+  const {
+    currentState,
+    setNewNoteText,
+    setNewNoteUrl,
+    setNewNoteCategory,
+    setNewNoteCategoryName,
+    setNewNoteCategoryColor,
+    cancelAll,
+    saveNote,
+    categories,
+  } = useMessageReceiver();
   return (
     <>
       {currentState.new_note && (
         <div className="overlay">
           <NewNoteCreator
+            categories={categories}
             onCancel={cancelAll}
             value={currentState.new_note}
             onSave={() => {
@@ -55,6 +73,9 @@ export function Root() {
             }}
             onSetNoteText={setNewNoteText}
             onSetNoteUrl={setNewNoteUrl}
+            onSetNoteCategory={setNewNoteCategory}
+            onSetNoteCategoryName={setNewNoteCategoryName}
+            onSetNoteCategoryColor={setNewNoteCategoryColor}
           />
         </div>
       )}

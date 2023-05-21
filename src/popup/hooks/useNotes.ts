@@ -1,10 +1,15 @@
-import { useEffect, useState } from 'react';
-import { Note, createNote, removeNote } from '../../shared/note';
+import { useEffect, useMemo, useState } from 'react';
+import { Note, createNote, getNotes, removeNote } from '../../shared/note';
 
 export function useNotes() {
   const [notes, setNotes] = useState<Note[]>([]);
 
   useEffect(() => {
+    (async () => {
+      const notes = await getNotes();
+      setNotes(notes);
+    })();
+
     const change_listener = (changes: {
       [key: string]: chrome.storage.StorageChange;
     }) => {
@@ -34,4 +39,32 @@ export function useNotes() {
     addNote: createNote,
     removeNote: removeNote,
   };
+}
+
+export function useRecentNotes() {
+  const { notes } = useNotes();
+  return useMemo(
+    () =>
+      notes.sort((a, b) =>
+        a.created_at > b.created_at ? -1 : a.created_at < b.created_at ? 1 : 0
+      ),
+    [notes]
+  );
+}
+
+export function useSearchNotes(query: string) {
+  const qtrim = query.trim();
+  const notes = useRecentNotes();
+  return useMemo(
+    () =>
+      !qtrim
+        ? notes
+        : notes.filter(
+            (a) =>
+              a.text.includes(qtrim) ||
+              a.pageurl.includes(qtrim) ||
+              (a.type === 'link' && a.url?.includes(qtrim))
+          ),
+    [notes, qtrim]
+  );
 }

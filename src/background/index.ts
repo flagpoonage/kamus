@@ -1,16 +1,13 @@
+import { createNewCategory } from '../shared/category';
 import { createNewEntryMessage, isSaveMessage } from '../shared/messages';
-import { createNote } from '../shared/note';
+import { createNote, getNotes } from '../shared/note';
+import { createSafeUrl } from '../shared/utils';
 
 chrome.contextMenus.removeAll(() => {
   chrome.contextMenus.create({
     id: 'take-link-context',
-    contexts: ['link'],
-    title: 'Take URL as note',
-  });
-  chrome.contextMenus.create({
-    id: 'take-selection-note',
-    contexts: ['selection'],
-    title: 'Take note from selection',
+    contexts: ['link', 'selection'],
+    title: 'Take note',
   });
 });
 
@@ -32,12 +29,39 @@ chrome.contextMenus.onClicked.addListener(async (info) => {
   );
 });
 
-chrome.runtime.onMessage.addListener((message) => {
+chrome.runtime.onMessage.addListener(async (message) => {
   if (isSaveMessage(message)) {
-    createNote({
+    const category =
+      message.category === '--new'
+        ? (
+            await createNewCategory({
+              title: message.new_category,
+              color: message.new_category_color,
+            })
+          )?.id
+        : message.category === '--none'
+        ? undefined
+        : message.category;
+
+    await createNote({
       text: message.text,
-      pageurl: message.pageurl,
-      url: message.linkurl,
+      pageurl: message.page_url,
+      url: message.link_url,
+      category: category,
     });
   }
 });
+
+(async () => {
+  const notes = await getNotes();
+  chrome.action.setBadgeText({
+    text: notes.length.toString(),
+  });
+  chrome.storage.local.onChanged.addListener((change) => {
+    if (change.notes) {
+      chrome.action.setBadgeText({
+        text: (change.notes.newValue as []).length.toString(),
+      });
+    }
+  });
+})();

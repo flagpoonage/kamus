@@ -25,8 +25,11 @@ export function isShowNewEntryMessage(
 export interface BSSaveMessage {
   msgtyp: 'save_message';
   text: string;
-  pageurl: string;
-  linkurl?: string;
+  category: string;
+  new_category: string;
+  new_category_color: string;
+  link_url?: string;
+  page_url: string;
 }
 
 export function createSaveMessage(

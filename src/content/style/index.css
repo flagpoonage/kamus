@@ -28,7 +28,7 @@ x-kamus-root {
 }
 
 x-kamus-dialog {
-  border-radius: 0.5rem;
+  border-radius: 0.5em;
   background-color: white;
   box-shadow: 0 5px 11px -5px rgba(0, 0, 0, 0.3);
   min-width: 640px;
@@ -36,15 +36,15 @@ x-kamus-dialog {
   @media screen and (max-width: 640px) {
     min-width: auto;
     width: 100%;
-    margin: 0 1rem;
+    margin: 0 1em;
   }
 }
 
 x-kamus-dialog-header {
-  padding: 1rem;
+  padding: 1em;
   display: block;
   font-weight: bold;
-  color: #f08;
+  color: #e00078;
 
   + x-kamus-dialog-body {
     border-top: solid 1px rgba(0, 0, 0, 0.1);
@@ -52,8 +52,16 @@ x-kamus-dialog-header {
 }
 
 x-kamus-dialog-body {
-  padding: 1rem;
+  padding: 1em;
   display: block;
+
+  input {
+    font-size: 16px !important;
+    display: block;
+    margin: 0;
+    font-size: 16px !important;
+    line-height: 20px !important;
+  }
 
   + x-kamus-dialog-actions {
     border-top: solid 1px rgba(0, 0, 0, 0.1);
@@ -61,33 +69,62 @@ x-kamus-dialog-body {
 
   label.kamus-content-input-label {
     display: block;
-    font-size: 0.85rem;
-    margin-bottom: 0.25rem;
+    font-size: 0.85em;
+    margin-bottom: 0.25em;
   }
 
   textarea.kamus-content-input,
   input.kamus-content-input {
-    display: block;
-    border: solid 1px rgba(0, 0, 0, 0.2);
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
-    width: 100%;
-    outline-color: #f08;
-    resize: vertical;
-    font-size: 16px;
-    font-family: sans-serif;
+    display: block !important;
+    border: solid 1px rgba(0, 0, 0, 0.2) !important;
+    padding: 0.25em 0.5em !important;
+    border-radius: 0.25em !important;
+    width: 100% !important;
+    outline-color: #e00078 !important;
+    resize: none !important;
+    font-size: 16px !important;
+    font-family: sans-serif !important;
+    line-height: 20px !important;
+    overflow: hidden !important;
+    color: #333 !important;
+  }
+
+  textarea.kamus-content-input:focus-visible {
+    outline-offset: 2px;
+    outline-color: #e00078;
   }
 
   .kamus-content-input-field + .kamus-content-input-field {
-    margin-top: 0.5rem;
+    margin-top: 0.5em;
+  }
+
+  .kamus-content-radio-input-row {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+
+    + .kamus-content-radio-input-row {
+      margin-top: 0.5rem;
+    }
   }
 }
 
 x-kamus-dialog-actions {
-  padding: 1rem;
+  padding: 1em;
   display: block;
   display: flex;
   justify-content: end;
+}
+
+x-kamus-textmeasure {
+  position: fixed;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 0;
+  display: block;
+  box-sizing: border-box;
 }
 
 x-kamus-dialog-action {
@@ -97,32 +134,42 @@ x-kamus-dialog-action {
   padding: 0;
   width: auto;
   height: auto;
-  background-color: #f08;
+  background-color: #e00078;
   color: white;
-  padding: 0.5rem 1rem;
-  line-height: 1rem;
+  padding: 0.5em 1em;
+  line-height: 1em;
   font-weight: bold;
-  border-radius: 0.25rem;
+  border-radius: 0.25em;
   border-bottom: solid 2px #95004f;
   border-right: solid 2px #95004f;
-  border-top: solid 2px #f08;
-  border-left: solid 2px #f08;
+  border-top: solid 2px #e00078;
+  border-left: solid 2px #e00078;
 
   &:active {
     background-color: #e5007a;
     border-top: solid 2px #95004f;
     border-left: solid 2px #95004f;
-    border-bottom: solid 2px #f08;
-    border-right: solid 2px #f08;
+    border-bottom: solid 2px #e00078;
+    border-right: solid 2px #e00078;
   }
 
   &.secondary {
     background-color: transparent;
     border: solid 2px transparent;
-    color: #f08;
+    color: #e00078;
 
     &:active {
       background-color: rgba(0, 0, 0, 0.1);
     }
   }
+}
+
+x-kamus-category-tag {
+  border-radius: 0.25em;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 0.25em 0.5em;
+  line-height: 20px;
+  display: inline-block;
+  vertical-align: middle;
 }
