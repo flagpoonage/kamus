@@ -11,16 +11,14 @@ chrome.contextMenus.removeAll(() => {
   });
 });
 
-chrome.contextMenus.onClicked.addListener(async (info) => {
-  const [active_tab] = await chrome.tabs.query({ active: true });
-
-  if (!active_tab?.id) {
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+  if (!tab?.id) {
     console.warn('Unable to find active tab');
     return;
   }
 
   chrome.tabs.sendMessage(
-    active_tab.id,
+    tab.id,
     createNewEntryMessage({
       selectionText: info.selectionText,
       pageUrl: info.pageUrl,

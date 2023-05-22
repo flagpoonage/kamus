@@ -31,5 +31,5 @@
       "js": ["content.js"]
     }
   ],
-  "permissions": ["contextMenus", "storage", "tabs"]
+  "permissions": ["contextMenus", "storage"]
 }
