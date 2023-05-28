@@ -13,7 +13,7 @@
     "build:popup-style": "postcss ./src/popup/style/index.css --verbose -u postcss-nested -u postcss-import | esbuild --loader=css --minify | cat > ./dist-prod/popup-style.css",
     "build:content": "esbuild ./src/content/index.ts --minify --bundle  --outfile=./dist-prod/content.js",
     "build:background": "esbuild ./src/background/index.ts --minify --bundle  --outfile=./dist-prod/background.js",
-    "build": "npm run build:copy && npm run build:popup && npm run build:popup-style && npm run build:content && npm run build:background"
+    "build": "npm run build:copy && npm run build:popup && npm run build:content-style && npm run build:popup-style && npm run build:content && npm run build:background"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.236",
